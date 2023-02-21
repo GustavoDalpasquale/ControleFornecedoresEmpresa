@@ -166,6 +166,36 @@ namespace ControleFornecedoresEmpresaAPI.Context
                     Tipo = "Física",
                 }
                 );
+            modelBuilder.Entity<Empresa>().HasData(
+                new Empresa
+                {
+                    Id = 1,
+                    IdSiglasUF = 1,
+                    Nome = "Empresa Teste",
+                    CNPJ = "CNPJ Teste"
+                }
+                );
+            modelBuilder.Entity<Fornecedor>().HasData(
+                new Fornecedor
+                {
+                    Id = 1,
+                    IdEmpresa = 1,
+                    IdTipoPessoa = 2,
+                    Nome = "Fornecedor Teste",
+                    CPFCNPJ = "12345678911",
+                    DataHoraCadastro = System.DateTime.Now,
+                    DataNascimento = System.DateTime.Today,
+                    RG = "1234567"
+                }
+                );
+            modelBuilder.Entity<TelefonesFornecedor>().HasData(
+                new TelefonesFornecedor
+                {
+                    Id=1,
+                    IdFornecedor=1,
+                    Telefone= "4798877665544"
+                }
+                );
         }
 
     }

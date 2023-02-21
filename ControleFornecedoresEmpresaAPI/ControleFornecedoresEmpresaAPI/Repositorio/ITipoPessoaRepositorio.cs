@@ -1,14 +1,12 @@
 ﻿using ControleFornecedoresEmpresaAPI.Models;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace ControleFornecedoresEmpresaAPI.Repositorio
 {
-    public interface ISiglasUFRepositorio
+    public interface ITipoPessoaRepositorio
     {
-        Task<IEnumerable<SiglasUF>> GetSiglasUFs();
-        Task<SiglasUF> GetSiglasUFPorId(int id);
+        Task<IEnumerable<TipoPessoa>> GetTipoPessoas();
+        Task<TipoPessoa> GetTipoPessoaPorId(int id);
     }
 }

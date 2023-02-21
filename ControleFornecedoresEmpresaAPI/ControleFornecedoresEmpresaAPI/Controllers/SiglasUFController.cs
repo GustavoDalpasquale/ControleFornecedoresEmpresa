@@ -2,9 +2,7 @@
 using ControleFornecedoresEmpresaAPI.Repositorio;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace ControleFornecedoresEmpresaAPI.Controllers
@@ -30,9 +28,23 @@ namespace ControleFornecedoresEmpresaAPI.Controllers
             }
             catch
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Erro ao obter alunos.");
+                return StatusCode(StatusCodes.Status500InternalServerError, "Erro ao obter siglas UF.");
             }
 
+        }
+
+        [HttpGet("{id:int}", Name = "GetSiglasUFPorId")]
+        public async Task<ActionResult<SiglasUF>> GetSiglasUFPorID(int id)
+        {
+            try
+            {
+                var sigla = await _siglasUFRepositorio.GetSiglasUFPorId(id);
+                return sigla;
+            }
+            catch
+            {
+                return BadRequest("Request inválido! Erro ao obter sigla da UF por id.");
+            }
         }
     }
 

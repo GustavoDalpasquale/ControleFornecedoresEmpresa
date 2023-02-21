@@ -6,20 +6,20 @@ using System.Threading.Tasks;
 
 namespace ControleFornecedoresEmpresaAPI.Repositorio
 {
-    public class SiglasUFRepositorio : ISiglasUFRepositorio
+    public class TipoPessoaRepositorio : ITipoPessoaRepositorio
     {
         private readonly AppDbContext _context;
 
-        public SiglasUFRepositorio(AppDbContext context)
+        public TipoPessoaRepositorio(AppDbContext context)
         {
             _context = context;
         }
 
-        public async Task<IEnumerable<SiglasUF>> GetSiglasUFs()
+        public async Task<IEnumerable<TipoPessoa>> GetTipoPessoas()
         {
             try
             {
-                return await _context.TBSiglasUF.ToListAsync();
+                return await _context.TBTipoPessoa.ToListAsync();
             }
             catch
             {
@@ -27,16 +27,17 @@ namespace ControleFornecedoresEmpresaAPI.Repositorio
             }
         }
 
-        public async Task<SiglasUF> GetSiglasUFPorId(int id)
+
+        public async Task<TipoPessoa> GetTipoPessoaPorId(int id)
         {
             try
             {
-                return await _context.TBSiglasUF.FindAsync(id);
+                return await _context.TBTipoPessoa.FindAsync(id);
             }
             catch
             {
                 throw;
             }
-        }
+        }        
     }
 }

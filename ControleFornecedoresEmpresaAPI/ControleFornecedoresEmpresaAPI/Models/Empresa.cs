@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ControleFornecedoresEmpresaAPI.Models
 {
@@ -7,7 +8,10 @@ namespace ControleFornecedoresEmpresaAPI.Models
         public int Id { get; set; }
 
         [Required(ErrorMessage = "{0} é obrigatório!")]
+        [Display(Name ="UF")]
+        public int IdSiglasUF { get; set; }
 
+        [ForeignKey("IdSiglasUF")]
         public SiglasUF SiglasUF { get; set; }
 
         [Required(ErrorMessage = "{0} é obrigatório!")]

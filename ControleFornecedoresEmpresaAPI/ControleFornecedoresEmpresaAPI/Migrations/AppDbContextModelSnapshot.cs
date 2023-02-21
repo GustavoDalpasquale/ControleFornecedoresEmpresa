@@ -31,19 +31,28 @@ namespace ControleFornecedoresEmpresaAPI.Migrations
                         .HasMaxLength(14)
                         .HasColumnType("nvarchar(14)");
 
+                    b.Property<int>("IdSiglasUF")
+                        .HasColumnType("int");
+
                     b.Property<string>("Nome")
                         .IsRequired()
                         .HasMaxLength(60)
                         .HasColumnType("nvarchar(60)");
 
-                    b.Property<int?>("SiglasUFId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("SiglasUFId");
+                    b.HasIndex("IdSiglasUF");
 
                     b.ToTable("TBEmpresa");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CNPJ = "CNPJ Teste",
+                            IdSiglasUF = 1,
+                            Nome = "Empresa Teste"
+                        });
                 });
 
             modelBuilder.Entity("ControleFornecedoresEmpresaAPI.Models.Fornecedor", b =>
@@ -64,7 +73,10 @@ namespace ControleFornecedoresEmpresaAPI.Migrations
                     b.Property<DateTime?>("DataNascimento")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("EmpresaId")
+                    b.Property<int>("IdEmpresa")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IdTipoPessoa")
                         .HasColumnType("int");
 
                     b.Property<string>("Nome")
@@ -76,16 +88,26 @@ namespace ControleFornecedoresEmpresaAPI.Migrations
                         .HasMaxLength(7)
                         .HasColumnType("nvarchar(7)");
 
-                    b.Property<int?>("TipoPessoaId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("EmpresaId");
+                    b.HasIndex("IdEmpresa");
 
-                    b.HasIndex("TipoPessoaId");
+                    b.HasIndex("IdTipoPessoa");
 
                     b.ToTable("TBFornecedor");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CPFCNPJ = "12345678911",
+                            DataHoraCadastro = new DateTime(2023, 2, 21, 18, 32, 26, 523, DateTimeKind.Local).AddTicks(7706),
+                            DataNascimento = new DateTime(2023, 2, 21, 0, 0, 0, 0, DateTimeKind.Local),
+                            IdEmpresa = 1,
+                            IdTipoPessoa = 2,
+                            Nome = "Fornecedor Teste",
+                            RG = "1234567"
+                        });
                 });
 
             modelBuilder.Entity("ControleFornecedoresEmpresaAPI.Models.SiglasUF", b =>
@@ -247,7 +269,7 @@ namespace ControleFornecedoresEmpresaAPI.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("FornecedorId")
+                    b.Property<int>("IdFornecedor")
                         .HasColumnType("int");
 
                     b.Property<string>("Telefone")
@@ -255,9 +277,17 @@ namespace ControleFornecedoresEmpresaAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("FornecedorId");
+                    b.HasIndex("IdFornecedor");
 
                     b.ToTable("TBTelefonesFornecedor");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            IdFornecedor = 1,
+                            Telefone = "4798877665544"
+                        });
                 });
 
             modelBuilder.Entity("ControleFornecedoresEmpresaAPI.Models.TipoPessoa", b =>
@@ -291,7 +321,9 @@ namespace ControleFornecedoresEmpresaAPI.Migrations
                 {
                     b.HasOne("ControleFornecedoresEmpresaAPI.Models.SiglasUF", "SiglasUF")
                         .WithMany()
-                        .HasForeignKey("SiglasUFId");
+                        .HasForeignKey("IdSiglasUF")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("SiglasUF");
                 });
@@ -300,11 +332,15 @@ namespace ControleFornecedoresEmpresaAPI.Migrations
                 {
                     b.HasOne("ControleFornecedoresEmpresaAPI.Models.Empresa", "Empresa")
                         .WithMany()
-                        .HasForeignKey("EmpresaId");
+                        .HasForeignKey("IdEmpresa")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("ControleFornecedoresEmpresaAPI.Models.TipoPessoa", "TipoPessoa")
                         .WithMany()
-                        .HasForeignKey("TipoPessoaId");
+                        .HasForeignKey("IdTipoPessoa")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Empresa");
 
@@ -315,7 +351,9 @@ namespace ControleFornecedoresEmpresaAPI.Migrations
                 {
                     b.HasOne("ControleFornecedoresEmpresaAPI.Models.Fornecedor", "Fornecedor")
                         .WithMany()
-                        .HasForeignKey("FornecedorId");
+                        .HasForeignKey("IdFornecedor")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Fornecedor");
                 });

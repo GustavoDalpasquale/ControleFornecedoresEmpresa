@@ -35,6 +35,10 @@ namespace ControleFornecedoresEmpresaAPI
             services.AddDbContext<AppDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddScoped<ISiglasUFRepositorio, SiglasUFRepositorio>();
+            services.AddScoped<IEmpresaRepositorio, EmpresaRepositorio>();
+            services.AddScoped<ITipoPessoaRepositorio, TipoPessoaRepositorio>();
+            services.AddScoped<IFornecedorRepositorio, FornecedorRepositorio>();
+            services.AddScoped<ITelefonesFornecedorRepositorio, TelefonesFornecedorRepositorio>();
 
             services.AddSwaggerGen(c =>
             {
