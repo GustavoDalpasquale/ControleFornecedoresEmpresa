@@ -2,6 +2,7 @@
 using ControleFornecedoresEmpresaAPI.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace ControleFornecedoresEmpresaAPI.Repositorio
@@ -37,6 +38,20 @@ namespace ControleFornecedoresEmpresaAPI.Repositorio
             {
                 throw;
             }
+        }
+
+        public async Task<IEnumerable<Empresa>> GetEmpresaPorNome(string nome)
+        {
+            IEnumerable<Empresa> empresas;
+            if (!string.IsNullOrEmpty(nome))
+            {
+                empresas = await _context.TBEmpresa.Where(empresa => empresa.Nome.ToUpper().StartsWith(nome.ToUpper())).ToListAsync();
+            }
+            else
+            {
+                empresas = await GetEmpresas();
+            }
+            return empresas;
         }
 
         public async Task CreateEmpresa(Empresa empresa)

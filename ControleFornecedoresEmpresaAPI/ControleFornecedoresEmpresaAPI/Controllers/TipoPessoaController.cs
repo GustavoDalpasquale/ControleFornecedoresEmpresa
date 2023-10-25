@@ -41,6 +41,10 @@ namespace ControleFornecedoresEmpresaAPI.Controllers
             try
             {
                 var tipoPessoa = await _tipoPessoaRepositorio.GetTipoPessoaPorId(id);
+                if (tipoPessoa == null)
+                {
+                    return BadRequest($"Não foi encontrado tipo pessoa com id {id}.");
+                }
                 return Ok(tipoPessoa);
             }
             catch

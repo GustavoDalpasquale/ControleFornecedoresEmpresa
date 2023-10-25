@@ -1,7 +1,9 @@
 ﻿using ControleFornecedoresEmpresaAPI.Models;
 using ControleFornecedoresEmpresaAPI.Repositorio;
+using ControleFornecedoresEmpresaAPI.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -12,10 +14,16 @@ namespace ControleFornecedoresEmpresaAPI.Controllers
     public class FornecedorController : ControllerBase
     {
         private IFornecedorRepositorio _fornecedorRepositorio;
+        private ITipoPessoaRepositorio _tipoPessoaRepositorio;
+        private IEmpresaRepositorio _empresaRepositorio;
+        private ISiglasUFRepositorio _siglasUFRepositorio;
 
-        public FornecedorController(IFornecedorRepositorio fornecedorRepositorio)
+        public FornecedorController(IFornecedorRepositorio fornecedorRepositorio, ITipoPessoaRepositorio tipoPessoaRepositorio, IEmpresaRepositorio empresaRepositorio, ISiglasUFRepositorio siglasUFRepositorio)
         {
             _fornecedorRepositorio = fornecedorRepositorio;
+            _tipoPessoaRepositorio = tipoPessoaRepositorio;
+            _empresaRepositorio = empresaRepositorio;
+            _siglasUFRepositorio = siglasUFRepositorio;
         }
 
         [HttpGet]
@@ -33,11 +41,15 @@ namespace ControleFornecedoresEmpresaAPI.Controllers
         }
 
         [HttpGet("{id:int}", Name = "GetFornecedorPorId")]
-        public async Task<ActionResult<Empresa>> GetFornecedorPorId(int id)
+        public async Task<ActionResult<Fornecedor>> GetFornecedorPorId(int id)
         {
             try
             {
                 var fornecedor = await _fornecedorRepositorio.GetFornecedorPorId(id);
+                if (fornecedor == null)
+                {
+                    return BadRequest($"Não foi encontrado fornecedor com id {id}.");
+                }
                 return Ok(fornecedor);
             }
             catch
@@ -46,16 +58,89 @@ namespace ControleFornecedoresEmpresaAPI.Controllers
             }
         }
 
+        [HttpGet("{nome}", Name = "GetFornecedorPorNome")]
+        public async Task<ActionResult<Fornecedor>> GetFornecedorPorNome(string nome)
+        {
+            try
+            {
+                var fornecedor = await _fornecedorRepositorio.GetFornecedorPorNome(nome);
+                return Ok(fornecedor);
+            }
+            catch
+            {
+                return BadRequest("Request inválido! Erro ao obter fornecedor por nome.");
+            }
+        }
+
+        [HttpGet("[action]/{cpfcnpj}", Name = "GetFornecedorPorCPFCNPJ")]
+        public async Task<ActionResult<Fornecedor>> GetFornecedorPorCPFCNPJ(string cpfcnpj)
+        {
+            try
+            {
+                ValidacoesService valida = new ValidacoesService();
+                var fornecedor = await _fornecedorRepositorio.GetFornecedorPorCPFCNPJ(valida.LimpaCPFCNPJ(cpfcnpj));
+                return Ok(fornecedor);
+            }
+            catch
+            {
+                return BadRequest("Request inválido! Erro ao obter fornecedor por CPF/CNPJ.");
+            }
+        }
+
+        [HttpGet("{dataCadastroPesquisada:DateTime}", Name = "GetFornecedorPorDataCadastro")]
+        public async Task<ActionResult<Fornecedor>> GetFornecedorPorDataCadastro(DateTime dataCadastroPesquisada)
+        {
+            try
+            {
+                var fornecedor = await _fornecedorRepositorio.GetFornecedorPorDataCadastro(dataCadastroPesquisada);
+                return Ok(fornecedor);
+            }
+            catch
+            {
+                return BadRequest("Request inválido! Erro ao obter fornecedor por data de cadastro.");
+            }
+        }
+
         [HttpPost]
         public async Task<ActionResult> Create(Fornecedor fornecedor)
         {
             try
             {
-                await _fornecedorRepositorio.CreateFornecedor(fornecedor);
-                return CreatedAtRoute(nameof(GetFornecedorPorId), new { id = fornecedor.Id }, fornecedor);
+                ValidacoesService valida = new ValidacoesService();
+
+                if (valida.ValidaCPF(fornecedor.CPFCNPJ) || valida.ValidaCNPJ(fornecedor.CPFCNPJ))
+                {
+                    TipoPessoa tipo = await _tipoPessoaRepositorio.GetTipoPessoaPorId(fornecedor.IdTipoPessoa);
+                    if (tipo.Tipo == "Física")
+                    {
+                        if (fornecedor.DataNascimento == null)
+                        {
+                            return BadRequest("É obrigatório preencher o nascimento quando o fornecedor for do tipo pessoa jurídico.");
+                        }
+                        Empresa empresa = await _empresaRepositorio.GetEmpresaPorId(fornecedor.IdEmpresa);
+                        SiglasUF sigla = await _siglasUFRepositorio.GetSiglasUFPorId(empresa.IdSiglasUF);
+                        if (sigla.Sigla == "PR")
+                        {
+                            if (!(valida.ValidaNascimentoMaiorDeIdade(fornecedor.DataNascimento.Value)))
+                            {
+                                return BadRequest("Fornecedor do tipo pessoa jurídico precisa ser maior de idade (18 anos ou superior) para ser vinculado a uma empresa de Paraná.");
+                            }
+                        }
+                    }
+                    await _fornecedorRepositorio.CreateFornecedor(fornecedor);
+                    return CreatedAtRoute(nameof(GetFornecedorPorId), new { id = fornecedor.Id }, fornecedor);
+                }
+                else
+                {
+                    return BadRequest("CPF/CNPJ inválido.");
+                }
             }
             catch
             {
+                if (fornecedor.Id != 0)
+                {
+                    return BadRequest("Erro ao cadastrar fornecedor. ID deve ser informado como zero.");
+                }
                 return BadRequest("Request inválido! Erro ao cadastrar fornecedor.");
             }
         }

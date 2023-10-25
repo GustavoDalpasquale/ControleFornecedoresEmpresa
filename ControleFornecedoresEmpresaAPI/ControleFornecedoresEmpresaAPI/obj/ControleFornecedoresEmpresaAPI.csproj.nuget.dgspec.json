@@ -1,21 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "E:\\Projetos\\csharp\\ControleFornecedoresEmpresa\\ControleFornecedoresEmpresaAPI\\ControleFornecedoresEmpresaAPI\\ControleFornecedoresEmpresaAPI.csproj": {}
+    "E:\\Projetos\\ControleFornecedoresEmpresa\\ControleFornecedoresEmpresaAPI\\ControleFornecedoresEmpresaAPI\\ControleFornecedoresEmpresaAPI.csproj": {}
   },
   "projects": {
-    "E:\\Projetos\\csharp\\ControleFornecedoresEmpresa\\ControleFornecedoresEmpresaAPI\\ControleFornecedoresEmpresaAPI\\ControleFornecedoresEmpresaAPI.csproj": {
+    "E:\\Projetos\\ControleFornecedoresEmpresa\\ControleFornecedoresEmpresaAPI\\ControleFornecedoresEmpresaAPI\\ControleFornecedoresEmpresaAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\Projetos\\csharp\\ControleFornecedoresEmpresa\\ControleFornecedoresEmpresaAPI\\ControleFornecedoresEmpresaAPI\\ControleFornecedoresEmpresaAPI.csproj",
+        "projectUniqueName": "E:\\Projetos\\ControleFornecedoresEmpresa\\ControleFornecedoresEmpresaAPI\\ControleFornecedoresEmpresaAPI\\ControleFornecedoresEmpresaAPI.csproj",
         "projectName": "ControleFornecedoresEmpresaAPI",
-        "projectPath": "E:\\Projetos\\csharp\\ControleFornecedoresEmpresa\\ControleFornecedoresEmpresaAPI\\ControleFornecedoresEmpresaAPI\\ControleFornecedoresEmpresaAPI.csproj",
+        "projectPath": "E:\\Projetos\\ControleFornecedoresEmpresa\\ControleFornecedoresEmpresaAPI\\ControleFornecedoresEmpresaAPI\\ControleFornecedoresEmpresaAPI.csproj",
         "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
-        "outputPath": "E:\\Projetos\\csharp\\ControleFornecedoresEmpresa\\ControleFornecedoresEmpresaAPI\\ControleFornecedoresEmpresaAPI\\obj\\",
+        "outputPath": "E:\\Projetos\\ControleFornecedoresEmpresa\\ControleFornecedoresEmpresaAPI\\ControleFornecedoresEmpresaAPI\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "E:\\VisualStudio\\Shared\\NuGetPackages",
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+          "C:\\G\\Microsoft Visual Studio\\2022\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
           "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -23,15 +22,16 @@
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
-          "net5.0"
+          "netcoreapp3.1"
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
-          "net5.0": {
-            "targetAlias": "net5.0",
+          "netcoreapp3.1": {
+            "targetAlias": "netcoreapp3.1",
             "projectReferences": {}
           }
         },
@@ -42,9 +42,13 @@
         }
       },
       "frameworks": {
-        "net5.0": {
-          "targetAlias": "net5.0",
+        "netcoreapp3.1": {
+          "targetAlias": "netcoreapp3.1",
           "dependencies": {
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[5.0.17, )"
+            },
             "Microsoft.EntityFrameworkCore.SqlServer": {
               "target": "Package",
               "version": "[5.0.17, )"
@@ -66,7 +70,8 @@
             "net47",
             "net471",
             "net472",
-            "net48"
+            "net48",
+            "net481"
           ],
           "assetTargetFallback": true,
           "warn": true,
@@ -78,7 +83,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.416\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.403\\RuntimeIdentifierGraph.json"
         }
       }
     }

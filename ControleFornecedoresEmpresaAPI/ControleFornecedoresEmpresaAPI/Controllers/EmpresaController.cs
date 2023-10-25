@@ -1,5 +1,6 @@
 ﻿using ControleFornecedoresEmpresaAPI.Models;
 using ControleFornecedoresEmpresaAPI.Repositorio;
+using ControleFornecedoresEmpresaAPI.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -39,6 +40,10 @@ namespace ControleFornecedoresEmpresaAPI.Controllers
             try
             {
                 var empresa = await _empresaRepositorio.GetEmpresaPorId(id);
+                if (empresa == null)
+                {
+                    return BadRequest($"Não foi encontrado empresa com id {id}.");
+                }
                 return Ok(empresa);
             }
             catch
@@ -47,16 +52,39 @@ namespace ControleFornecedoresEmpresaAPI.Controllers
             }
         }
 
+        [HttpGet("{nome}", Name = "GetEmpresaPorNome")]
+        public async Task<ActionResult<Empresa>> GetEmpresaPorNome(string nome)
+        {
+            try
+            {
+                var empresa = await _empresaRepositorio.GetEmpresaPorNome(nome);
+                return Ok(empresa);
+            }
+            catch
+            {
+                return BadRequest("Request inválido! Erro ao obter empresa por nome.");
+            }
+        }
+
         [HttpPost]
         public async Task<ActionResult> Create(Empresa empresa)
         {
             try
             {
+                ValidacoesService valida = new ValidacoesService();
+                if (!valida.ValidaCNPJ(empresa.CNPJ))
+                {
+                    return BadRequest("CNPJ inválido.");
+                }
                 await _empresaRepositorio.CreateEmpresa(empresa);
                 return CreatedAtRoute(nameof(GetEmpresaPorId), new { id = empresa.Id }, empresa);
             }
             catch
             {
+                if(empresa.Id != 0)
+                {
+                    return BadRequest("Erro ao cadastrar empresa. ID deve ser informado como zero.");
+                }
                 return BadRequest("Request inválido! Erro ao cadastrar empresa.");
             }
         }

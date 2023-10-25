@@ -11,5 +11,6 @@ namespace ControleFornecedoresEmpresaAPI.Repositorio
         Task CreateEmpresa(Empresa empresa);
         Task UpdateEmpresa(Empresa empresa);
         Task DeleteEmpresa(Empresa empresa);
+        Task<IEnumerable<Empresa>> GetEmpresaPorNome(string nome);
     }
 }

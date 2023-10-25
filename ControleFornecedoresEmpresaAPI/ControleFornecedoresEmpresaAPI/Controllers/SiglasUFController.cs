@@ -39,6 +39,10 @@ namespace ControleFornecedoresEmpresaAPI.Controllers
             try
             {
                 var sigla = await _siglasUFRepositorio.GetSiglasUFPorId(id);
+                if (sigla == null)
+                {
+                    return BadRequest($"Não foi encontrado Sigla UF com id {id}.");
+                }
                 return sigla;
             }
             catch

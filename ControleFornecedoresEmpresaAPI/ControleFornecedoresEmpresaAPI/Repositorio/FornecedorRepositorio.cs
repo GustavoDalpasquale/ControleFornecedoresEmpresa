@@ -1,5 +1,6 @@
 ﻿using ControleFornecedoresEmpresaAPI.Context;
 using ControleFornecedoresEmpresaAPI.Models;
+using ControleFornecedoresEmpresaAPI.Services;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -55,6 +56,35 @@ namespace ControleFornecedoresEmpresaAPI.Repositorio
             return fornecedores;
         }
 
+        public async Task<IEnumerable<Fornecedor>> GetFornecedorPorCPFCNPJ(string cpfcnpj)
+        {
+            IEnumerable<Fornecedor> fornecedores;
+            if (!string.IsNullOrEmpty(cpfcnpj))
+            {
+                fornecedores = await _context.TBFornecedor.Where(fornecedor => fornecedor.CPFCNPJ.StartsWith(cpfcnpj)).ToListAsync();
+            }
+            else
+            {
+                fornecedores = await GetFornecedores();
+            }
+            return fornecedores;
+        }
+
+        public async Task<IEnumerable<Fornecedor>> GetFornecedorPorDataCadastro(DateTime dataCadastroPesquisada)
+        {
+            IEnumerable<Fornecedor> fornecedores;
+            if (dataCadastroPesquisada != null)
+            {
+                fornecedores = await _context.TBFornecedor.Where(fornecedor => fornecedor.DataHoraCadastro.Date == dataCadastroPesquisada.Date).ToListAsync();
+            }
+            else
+            {
+                fornecedores = await GetFornecedores();
+            }
+
+            return fornecedores;
+        }
+
         public async Task CreateFornecedor(Fornecedor fornecedor)
         {
             _context.TBFornecedor.Add(fornecedor);
@@ -71,6 +101,6 @@ namespace ControleFornecedoresEmpresaAPI.Repositorio
         {
             _context.TBFornecedor.Remove(fornecedor);
             await _context.SaveChangesAsync();
-        }                
+        }
     }
 }

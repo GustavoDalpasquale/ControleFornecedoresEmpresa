@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "TYBco5h+hyoEuJ34mHuj938eJUabvjII/NTN8dDkEfGis0GZRMRRG31qGofK2/F7FrPKoqSzJhnFx2lfzsLCEg==",
+  "dgSpecHash": "pCcYXZCRzUB5C42959rL87dwEY3KIDB0LEoFwgokczEOHkRSfT5F85ycIjnrqec+0bmSOfIEF0lorpm6VqEm3w==",
   "success": true,
-  "projectFilePath": "E:\\Projetos\\csharp\\ControleFornecedoresEmpresa\\ControleFornecedoresEmpresaAPI\\ControleFornecedoresEmpresaAPI\\ControleFornecedoresEmpresaAPI.csproj",
+  "projectFilePath": "E:\\Projetos\\ControleFornecedoresEmpresa\\ControleFornecedoresEmpresaAPI\\ControleFornecedoresEmpresaAPI\\ControleFornecedoresEmpresaAPI.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\User\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\User\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512",

@@ -38,6 +38,10 @@ namespace ControleFornecedoresEmpresaAPI.Controllers
             try
             {
                 var telefone = await _telefonesFornecedorRepositorio.GetTelefonePorId(id);
+                if (telefone == null)
+                {
+                    return BadRequest($"Não foi encontrado telefone com id {id}.");
+                }
                 return Ok(telefone);
             }
             catch
